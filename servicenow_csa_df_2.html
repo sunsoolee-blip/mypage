@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceNow CSA-DF Real Practice Quiz - Part 2 (61-120)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-teal-500 text-slate-900 p-2 rounded-xl font-black text-xl tracking-wider">
+                    NOW
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight">ServiceNow CSA-DF (Part 2)</h1>
+                    <p class="text-xs text-slate-400">Certified System Administrator - Exam Questions 61 to 120 (60 Questions)</p>
+                </div>
+            </div>
+            
+            <!-- Mode Switcher -->
+            <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
+                <button id="btn-practice-mode" onclick="setMode('practice')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-teal-500 text-slate-900 shadow-sm">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> 연습 모드 (즉시 확인)
+                </button>
+                <button id="btn-exam-mode" onclick="setMode('exam')" class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-stopwatch mr-1"></i> 시험 모드 (최종 제출)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Left Column: Navigation Sidebar & Stats -->
+        <section class="w-full lg:w-80 flex-shrink-0 flex flex-col gap-6">
+            <!-- Progress Status Card -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">진행 상태 (Part 2)</h3>
+                    <span class="text-[10px] bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-bold">수정 항시 허용</span>
+                </div>
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-semibold text-slate-600">
+                        <span>진행률</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div id="progress-bar" class="bg-teal-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2 text-center text-xs font-medium">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <span class="block text-slate-400 mb-1">푼 문제</span>
+                        <span id="answered-count" class="text-lg font-bold text-slate-700">0 / 60</span>
+                    </div>
+                    <div id="score-stats-box" class="bg-slate-50 p-3 rounded-xl border border-slate-100 transition-colors">
+                        <span class="block text-slate-400 mb-1">현재 정답</span>
+                        <span id="score-text" class="text-lg font-bold text-slate-700">-</span>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-400 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <i class="fa-solid fa-circle-info mr-1 text-teal-500"></i> 
+                    <strong>자유로운 정답 수정 기능:</strong> 이미 푼 문제도 언제든 보기를 다시 클릭해 수정하면 즉각 반영 및 실시간 점수가 다시 산출됩니다.
+                </p>
+            </div>
+
+            <!-- Question Grid Card -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex-grow flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">문제 대시보드 (61-120)</h3>
+                    <button onclick="confirmResetQuiz()" class="text-xs font-semibold text-rose-500 hover:text-rose-600 transition-colors">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> 초기화
+                    </button>
+                </div>
+
+                <!-- Filter tab inside grid dashboard -->
+                <div class="flex gap-1 mb-3 border-b border-slate-100 pb-2">
+                    <button id="filter-all" onclick="setFilter('all')" class="flex-grow py-1 rounded text-[10px] font-bold bg-slate-100 text-slate-700">전체</button>
+                    <button id="filter-unsolved" onclick="setFilter('unsolved')" class="flex-grow py-1 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50">미풀이</button>
+                    <button id="filter-correct" onclick="setFilter('correct')" class="flex-grow py-1 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50">정답</button>
+                    <button id="filter-incorrect" onclick="setFilter('incorrect')" class="flex-grow py-1 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50">오답</button>
+                </div>
+
+                <!-- Scrollable grid of questions -->
+                <div id="questions-grid" class="grid grid-cols-5 gap-2 custom-scrollbar overflow-y-auto max-h-[300px] lg:max-h-[350px]">
+                    <!-- Dynamic Grid Items Generated via JS -->
+                </div>
+
+                <!-- Legend of status colors -->
+                <div class="pt-5 border-t border-slate-100 mt-4 space-y-2 text-xs font-medium text-slate-500">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-slate-50 border border-slate-300"></div>
+                        <span>풀지 않은 문제</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-blue-500 border border-blue-600"></div>
+                        <span>체크만 한 문제</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-emerald-500 border border-emerald-600"></div>
+                        <span>제출된 정답 (연습모드)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-rose-500 border border-rose-600"></div>
+                        <span>제출된 오답 (연습모드)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Exam Content -->
+        <section class="flex-grow flex flex-col gap-6">
+            
+            <!-- Question Presentation Area -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 flex-grow flex flex-col justify-between min-h-[450px]">
+                <div>
+                    <!-- Meta info & Badge -->
+                    <div class="flex justify-between items-center gap-4 mb-6">
+                        <div class="flex items-center gap-2">
+                            <span id="question-index-badge" class="bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg font-mono">Question #61</span>
+                            <span id="question-type-badge" class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-1 rounded-md uppercase">Single Choice</span>
+                        </div>
+                        <span id="topic-badge" class="text-xs font-semibold text-slate-400">Topic</span>
+                    </div>
+
+                    <!-- Question text (English 원문) -->
+                    <div id="question-text" class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed mb-8 whitespace-pre-line">
+                        Loading question...
+                    </div>
+
+                    <!-- Answer Options -->
+                    <div id="options-container" class="space-y-3 font-medium">
+                        <!-- Dynamic Options Loaded via JS -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-container" class="mt-8 hidden p-5 rounded-2xl bg-teal-50 border border-teal-100 text-teal-900">
+                    <div class="flex items-start gap-3">
+                        <div class="text-teal-600 text-lg mt-0.5"><i class="fa-solid fa-circle-info"></i></div>
+                        <div class="w-full">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-sm text-teal-800">정답 및 한글 해설 (Suggested Answer & Rationale)</h4>
+                                <button onclick="modifyAnswerOnExplain()" class="text-xs font-bold text-teal-700 hover:text-teal-900 underline">
+                                    <i class="fa-solid fa-pen-to-square mr-1"></i> 답안 재설정하기
+                                </button>
+                            </div>
+                            <div id="correct-answers-display" class="text-xs font-bold text-slate-700 mb-2">Suggested Answer: </div>
+                            <p id="explanation-text" class="text-xs sm:text-sm leading-relaxed text-slate-600 whitespace-pre-line">
+                                Explanatory text will go here...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls for current question -->
+                <div class="flex justify-between items-center gap-4 mt-8 pt-6 border-t border-slate-100">
+                    <button onclick="prevQuestion()" id="btn-prev" class="px-5 py-2.5 rounded-xl border border-slate-300 font-bold text-xs text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors disabled:opacity-50 disabled:pointer-events-none">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> 이전
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                        <!-- Check/Submit button for Practice Mode -->
+                        <button onclick="submitCurrentAnswer()" id="btn-submit-answer" class="px-6 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-slate-900 font-bold text-xs shadow-sm transition-all">
+                            정답 확인
+                        </button>
+                    </div>
+
+                    <button onclick="nextQuestion()" id="btn-next" class="px-5 py-2.5 rounded-xl border border-slate-300 font-bold text-xs text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors disabled:opacity-50 disabled:pointer-events-none">
+                        다음 <i class="fa-solid fa-chevron-right mr-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Global Submission / Result View -->
+            <div id="global-action-bar" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="text-xs text-slate-500 font-medium">
+                    <i class="fa-solid fa-info-circle mr-1 text-slate-400"></i> 모든 문제를 풀었으면 아래 제출 버튼을 눌러 점수를 산출하세요.
+                </div>
+                <button onclick="confirmFinishQuiz()" id="btn-final-submit" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm shadow-md hover:bg-slate-800 active:bg-black transition-all">
+                    최종 모의고사 제출하기
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Modal Popup System -->
+    <div id="custom-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 mx-4 transform transition-all scale-95 duration-200">
+            <div class="flex items-start gap-4">
+                <div id="modal-icon-container" class="p-3 rounded-full flex-shrink-0">
+                    <i id="modal-icon" class="fa-solid text-xl"></i>
+                </div>
+                <div class="flex-grow">
+                    <h3 id="modal-title" class="text-base font-bold text-slate-900 mb-1">모달 제목</h3>
+                    <p id="modal-message" class="text-sm text-slate-500 leading-relaxed">상세 설명 메세지가 들어갑니다.</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100" id="modal-buttons">
+                <!-- Dynamically populated confirm/dismiss triggers -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Data and Logic Script -->
+    <script>
+        const quizData = [
+            {
+                number: 61,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "Which of the following is the correct definition of a Record Producer in ServiceNow?",
+                options: [
+                    { key: "A", text: "A specialized catalog item that allows users to create task-based records (such as Incidents or Changes) directly from the Service Catalog." },
+                    { key: "B", text: "A development tool used to automatically map database schemas into custom tables." },
+                    { key: "C", text: "A script that runs on the server to enforce field rules before data is saved." },
+                    { key: "D", text: "An automated workflow engine that assigns incoming tasks to team members." }
+                ],
+                correct: ["A"],
+                rationale: "레코드 프로듀서(Record Producer)는 사용자가 서비스 카탈로그 인터페이스에서 내용을 간편하게 입력하여 Incident나 Change와 같은 '작업 기반 레코드(Task-based records)'를 직접 생성할 수 있도록 매핑하는 카탈로그 항목 유형입니다."
+            },
+            {
+                number: 62,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "Which ServiceNow feature helps to automatically allocate a critical, high-priority service request to the appropriate assignment group or team member?",
+                options: [
+                    { key: "A", text: "UI Policy" },
+                    { key: "B", text: "Assignment Rule" },
+                    { key: "C", text: "Dictionary Override" },
+                    { key: "D", text: "Schema Map" }
+                ],
+                correct: ["B"],
+                rationale: "배정 규칙(Assignment Rule)은 특정 긴급도나 조건에 따라 접수된 중요 서비스 요청이나 장애 티켓을 알맞은 배정 그룹(Assignment Group) 또는 담당 팀원에게 자동으로 지정해 주는 핵심 규칙 기능입니다."
+            },
+            {
+                number: 63,
+                topic: "Database Management & Security",
+                type: "multi",
+                question: "Access Control rules (security rules) can provide security restrictions for which of the following database objects? (Choose two.)",
+                options: [
+                    { key: "A", text: "For a specific CMDB Configuration Item (CI)" },
+                    { key: "B", text: "For the entire database server filesystem" },
+                    { key: "C", text: "For a specific table or a specific field" },
+                    { key: "D", text: "For browser UI actions on client-side cache" }
+                ],
+                correct: ["A", "C"],
+                rationale: "액세스 제어 규칙(ACL)은 특정 구성 항목(CI)이나 개별 테이블(Table), 특정 필드(Field), 행(Row) 단위까지 접근 제한 보안을 걸 수 있도록 유연한 데이터베이스 통제를 제공합니다."
+            },
+            {
+                number: 64,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "What is the complete system object name for an Access Control rule that targets specifically the Major Incident field on the Incident table?",
+                options: [
+                    { key: "A", text: "incident_major_incident" },
+                    { key: "B", text: "incident.major_incident" },
+                    { key: "C", text: "major_incident.incident" },
+                    { key: "D", text: "sys_dictionary.incident" }
+                ],
+                correct: ["B"],
+                rationale: "인시던트(Incident) 테이블의 특정 필드인 주요 장애(major_incident) 필드를 지정하는 ACL의 정식 객체 명명 규칙은 '[테이블명].[필드명]' 형식을 사용하여 'incident.major_incident'로 정의됩니다."
+            },
+            {
+                number: 65,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which ServiceNow utility provides a modern interactive graphical interface to visualize configuration items and their relationships dynamically?",
+                options: [
+                    { key: "A", text: "Visual Task Board (VTB)" },
+                    { key: "B", text: "Dependency Views" },
+                    { key: "C", text: "Transform Map" },
+                    { key: "D", text: "CI Class Manager" }
+                ],
+                correct: ["B"],
+                rationale: "종속성 보기(Dependency Views)는 CMDB 내에서 특정 구성 항목(CI)을 기준으로 인프라 환경과 다른 장비들 간의 상하 연결 상태 및 장애 파급 효과를 최신 인터랙티브 그래픽 인터페이스로 가시화해 줍니다."
+            },
+            {
+                number: 66,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which tool is primarily used to define relationships between fields in an import set table (staging area) and a target table in the ServiceNow database?",
+                options: [
+                    { key: "A", text: "Transform Map" },
+                    { key: "B", text: "Form Designer" },
+                    { key: "C", text: "CI Class Map" },
+                    { key: "D", text: "Update Set" }
+                ],
+                correct: ["A"],
+                rationale: "변환 맵(Transform Map)은 데이터를 일괄 임포트할 때 임시 스테이징 테이블(Import Set)의 임시 칼럼과 최종 서비스나우 DB 대상 테이블(Target Table)의 칼럼 간 1:1 결합 관계를 설계하는 변환 설계도입니다."
+            },
+            {
+                number: 67, 
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "When importing data from a spreadsheet, which step defines where the incoming data columns will be written in the receiving target table?",
+                options: [
+                    { key: "A", text: "Execute Transform" },
+                    { key: "B", text: "Automatic Mapping" },
+                    { key: "C", text: "Create Transform Map" },
+                    { key: "D", text: "Load Data" }
+                ],
+                correct: ["C"],
+                rationale: "스프레드시트 데이터를 로드한 직후, 들어오는 엑셀 열들을 타겟 테이블의 어떤 필드에 대응하여 작성할 것인지 매핑 규칙을 직접 생성하는 단계가 'Create Transform Map'입니다."
+            },
+            {
+                number: 68,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "When importing spreadsheet data into ServiceNow, at which step does the data actually get written to the receiving target table?",
+                options: [
+                    { key: "A", text: "Load Data" },
+                    { key: "B", text: "Execute Transform" },
+                    { key: "C", text: "Automatic Mapping" },
+                    { key: "D", text: "Validate Import" }
+                ],
+                correct: ["B"],
+                rationale: "설계된 변환 맵을 기반으로 임시 적재 공간에 대기 중인 데이터를 실제 대상 DB 테이블로 실시간 주입하고 물리적 레코드를 쓰는 최종 실행 단계를 'Execute Transform'이라고 합니다."
+            },
+            {
+                number: 69,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "Which section on a task record is used to see the most recent updates and chronological changes made to that record?",
+                options: [
+                    { key: "A", text: "Activity Stream (Activity Formatter)" },
+                    { key: "B", text: "Related Links" },
+                    { key: "C", text: "Dictionary Override" },
+                    { key: "D", text: "VTB Board" }
+                ],
+                correct: ["A"],
+                rationale: "작업 레코드(Task Record) 하단에 위치한 'Activity Stream(액티비티 포매터)' 영역은 해당 레코드의 모든 변경값, 고객과의 메일 수발신, 내부 작업 기록(Work Notes) 등을 실시간 시간순으로 일괄 추적해 줍니다."
+            },
+            {
+                number: 70,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "What is the name of the conversational bot platform that provides assistance to help users obtain information, make decisions, and perform common tasks via a messaging interface?",
+                options: [
+                    { key: "A", text: "Activity Stream" },
+                    { key: "B", text: "Virtual Agent" },
+                    { key: "C", text: "Help Panel" },
+                    { key: "D", text: "Service Portal" }
+                ],
+                correct: ["B"],
+                rationale: "가상 에이전트(Virtual Agent)는 서비스 포털이나 사내 메시징 채널 상에서 대화형 인터랙티브 챗봇 인터페이스를 통해 사용자가 정보를 얻거나 셀프 서비스를 수행하도록 자동 지원하는 챗봇 엔진입니다."
+            },
+            {
+                number: 71,
+                topic: "Platform Overview & Navigation",
+                type: "single",
+                question: "Which instance resource (represented by a question mark icon) allows you to access guided tours, information about actions, and instructions on how to use inputs and outputs in your flow?",
+                options: [
+                    { key: "A", text: "Help Panel" },
+                    { key: "B", text: "System Settings" },
+                    { key: "C", text: "CI Class Manager" },
+                    { key: "D", text: "Notification Engine" }
+                ],
+                correct: ["A"],
+                rationale: "우측 상단 혹은 개별 워크스페이스 내에서 물음표 아이콘으로 활성화되는 '도움말 패널(Help Panel)'은 현재 위치한 화면의 구성안내, 가이드 투어, 그리고 Flow 입력값 설명서 등을 바로 조회하게 도와줍니다."
+            },
+            {
+                number: 72,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which tool graphically displays an infrastructure view for a Configuration Item (CI) and its relationships with other CIs?",
+                options: [
+                    { key: "A", text: "VTB Board" },
+                    { key: "B", text: "Dependency View" },
+                    { key: "C", text: "Schema Map" },
+                    { key: "D", text: "Activity Stream" }
+                ],
+                correct: ["B"],
+                rationale: "구성 항목(CI)과 다른 연관 설비/소프트웨어 간의 실제 연결 정보 및 인프라적 연결 지도를 계층화하여 그래픽으로 띄워 주는 기능은 'Dependency View(종속성 보기)'입니다."
+            },
+            {
+                number: 73,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "Which tool is used to fill in frequently used fields automatically in form views to speed up data entry for service agents?",
+                options: [
+                    { key: "A", text: "Template" },
+                    { key: "B", text: "Variables" },
+                    { key: "C", text: "Dictionary" },
+                    { key: "D", text: "Transform Map" }
+                ],
+                correct: ["A"],
+                rationale: "템플릿(Template) 기능은 자주 사용되는 특정 입력 양식의 기본값들(예: 카테고리, 담당 팀, 중요도)을 미리 세팅해 둔 후 클릭 한 번으로 자동 기입하여 요원의 입력 수고를 덜어주는 도구입니다."
+            },
+            {
+                number: 74,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "What components are used to define the custom input questions and fields of a Catalog Item form displayed to the customer?",
+                options: [
+                    { key: "A", text: "Variables" },
+                    { key: "B", text: "Update Sets" },
+                    { key: "C", text: "Database Views" },
+                    { key: "D", text: "Dictionary overrides" }
+                ],
+                correct: ["A"],
+                rationale: "변수(Variables)는 서비스 카탈로그를 신청하는 사용자가 마주하는 커스텀 양식의 개별 입력 칸(예: 신청 사유, 희망 납품일, 텍스트박스 등)의 종류를 지정하는 컴포넌트입니다."
+            },
+            {
+                number: 75,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which component of the ServiceNow infrastructure defines every table and field in the entire system database?",
+                options: [
+                    { key: "A", text: "System Dictionary" },
+                    { key: "B", text: "Transform Map" },
+                    { key: "C", text: "Update Set" },
+                    { key: "D", text: "Activity Stream" }
+                ],
+                correct: ["A"],
+                rationale: "시스템 사전(System Dictionary)은 인스턴스 전역에 존재하는 모든 테이블명, 필드명, 칼럼 제약조건, 데이터 유형 등의 완벽한 데이터 사전을 명문화하여 보관하는 핵심 인프라 테이블(`sys_dictionary`)입니다."
+            },
+            {
+                number: 76,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "Which feature displays a comprehensive chronological list of activities, modifications, and audit histories directly on a Form?",
+                options: [
+                    { key: "A", text: "History Menu / Activity Stream" },
+                    { key: "B", text: "Column Context Menu" },
+                    { key: "C", text: "Visual Task Board" },
+                    { key: "D", text: "Dependency Map" }
+                ],
+                correct: ["A"],
+                rationale: "레코드 변경 이력 및 감시 기록(Audit Trail)은 폼 보기 상단의 'History Menu' 및 폼 본문 하단의 'Activity Stream'을 통해 상세한 필드별 변경 시점과 가치를 조회할 수 있습니다."
+            },
+            {
+                number: 77,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "Which element, accessible by right-clicking a column header in list views, displays actions such as creating quick reports, configuring the list default layout, and exporting data?",
+                options: [
+                    { key: "A", text: "Column Context Menus" },
+                    { key: "B", text: "Form Designer" },
+                    { key: "C", text: "History Menu" },
+                    { key: "D", text: "Dictionary Override" }
+                ],
+                correct: ["A"],
+                rationale: "목록(List) 뷰에서 개별 열 제목 옆의 드롭다운 단추나 우클릭 시 호출되는 '열 콘텍스트 메뉴(Column Context Menus)'는 빠른 보고서 생성, 목록 제어, CSV/Excel 데이터 출력(Export) 등의 유용한 제어창을 제공합니다."
+            },
+            {
+                number: 78,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which centralized administration tool is used for managing CMDB configurations, creating relationships between CIs, and extending classes in ServiceNow?",
+                options: [
+                    { key: "A", text: "CI Class Manager" },
+                    { key: "B", text: "Form Designer" },
+                    { key: "C", text: "Automatic Mapping" },
+                    { key: "D", text: "VTB Editor" }
+                ],
+                correct: ["A"],
+                rationale: "CI 클래스 매니저(CI Class Manager)는 CMDB 구성 항목들의 상속 구조 설계, 종속성 규칙 수립, 주 클래스 설정 등을 수행하는 하나의 그래픽 통합 관리 센터입니다."
+            },
+            {
+                number: 79,
+                topic: "Platform Overview & Navigation",
+                type: "multi",
+                question: "Which elements can be directly configured and customized using the 'Basic Configuration UI16' module? (Choose three.)",
+                options: [
+                    { key: "A", text: "Instance Banner Image / Logo" },
+                    { key: "B", text: "Browser Tab Title" },
+                    { key: "C", text: "System Date and Time Format" },
+                    { key: "D", text: "Access Control Lists (ACLs)" },
+                    { key: "E", text: "Import Set Staging Tables" }
+                ],
+                correct: ["A", "B", "C"],
+                rationale: "'Basic Configuration UI16' 모듈은 인스턴스 최상단에 뜨는 기업 로고 이미지, 브라우저 상단 탭의 제목 명칭, 기본 날짜/시간 포맷 출력 방식 등 가벼운 전역 테마 설정을 총괄하는 관리창입니다."
+            },
+            {
+                number: 80,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "What are the three main board types available in ServiceNow Visual Task Boards (VTBs)?",
+                options: [
+                    { key: "A", text: "Flexible, Freeform, Guided boards" },
+                    { key: "B", text: "Active, Staged, Committed boards" },
+                    { key: "C", text: "Database, Schema, Transform boards" },
+                    { key: "D", text: "Client, Server, API boards" }
+                ],
+                correct: ["A"],
+                rationale: "비주얼 태스크 보드(VTB)는 폼 레이아웃의 자유도 및 연계 테이블의 종류 여부에 따라 크게 'Flexible', 'Freeform', 'Guided'의 3가지 작동 모드로 보드를 생성할 수 있습니다."
+            },
+            {
+                number: 81,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which database system containing details about tangible (hardware) and intangible (software licenses/services) business assets is called:",
+                options: [
+                    { key: "A", text: "IRE Engine" },
+                    { key: "B", text: "CMDB" },
+                    { key: "C", text: "Workflow Studio" },
+                    { key: "D", text: "System Dictionary" }
+                ],
+                correct: ["B"],
+                rationale: "구성 관리 데이터베이스(CMDB)는 네트워크, 스위치, 서버와 같은 유형(Tangible)의 설비 자산뿐만 아니라 라이선스, 가상 부서, 비즈니스 서비스 등의 무형(Intangible) 자산 관계까지 한눈에 추적하는 데이터베이스 저장소입니다."
+            },
+            {
+                number: 82,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "Which catalog component provides the specific capability to bundle multiple related catalog items together into one single unified checkout request?",
+                options: [
+                    { key: "A", text: "Record Producer" },
+                    { key: "B", text: "Order Guide" },
+                    { key: "C", text: "Variable Set" },
+                    { key: "D", text: "Flow Logic" }
+                ],
+                correct: ["B"],
+                rationale: "주문 가이드(Order Guide)는 신규 입사자 지원 등에서 '노트북 신청', '메일 주소 개설', '출입증 발급' 등 상호 연관된 복수의 카탈로그 개별 항목들을 하나의 마법사 화면 안에서 일괄 패키지로 묶어 주문하도록 지원하는 컴포넌트입니다."
+            },
+            {
+                number: 83,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which of the following describes the ServiceNow mechanism called 'Dot-Walking'?",
+                options: [
+                    { key: "A", text: "A method to traverse and fetch data from a series of referenced fields located on different tables." },
+                    { key: "B", text: "A graphical map of CMDB relational dependencies." },
+                    { key: "C", text: "A process of transferring update packages between development and test environments." },
+                    { key: "D", text: "A debugging tool used to inspect active user sessions." }
+                ],
+                correct: ["A"],
+                rationale: "닷워킹(Dot-Walking)은 서로 다른 테이블 간에 맺어진 참조(Reference) 관계를 추적하여, 하위 데이터 테이블의 상세 필드값(예: 사건의 '배정자' 테이블에 속한 '직급' 필드 정보)을 단계별 마침표(.)를 통해 체인 형식으로 직접 끌고 오는 강력한 쿼리 기법입니다."
+            },
+            {
+                number: 84,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which deployment tool allows administrators to group a series of configuration changes into a single named package and move it as a unit to another instance?",
+                options: [
+                    { key: "A", text: "Transform Map" },
+                    { key: "B", text: "Update Set" },
+                    { key: "C", text: "Import Set" },
+                    { key: "D", text: "Schema Editor" }
+                ],
+                correct: ["B"],
+                rationale: "업데이트 세트(Update Set)는 개발 인스턴스(Dev)에서 작업한 모든 화면 변경, 워크플로우, 데이터 구조 등의 '설정 정보'들만 하나의 버전 꾸러미로 모아 상위 운영 서버로 손쉽게 이관해 주는 마이그레이션 포장 상자입니다."
+            },
+            {
+                number: 85,
+                topic: "Instance Configuration",
+                type: "single",
+                question: "What is the primary utility of using the 'Impersonation' feature in ServiceNow?",
+                options: [
+                    { key: "A", text: "To encrypt passwords during database integration." },
+                    { key: "B", text: "For testing permission sets and verifying layout visibilities exactly as another user would see them." },
+                    { key: "C", text: "To assign higher elevated system roles to oneself permanently." },
+                    { key: "D", text: "To backup systemic tables on regular schedules." }
+                ],
+                correct: ["B"],
+                rationale: "사용자 빙의(Impersonation)는 타겟 사용자가 실제로 보는 UI 화면, 권한 한계, 버튼 표시 여부 등을 세션상에서 완벽하게 시뮬레이션함으로써 권한 트러블슈팅과 화면 보임성 디버깅을 원클릭 테스트하게 돕는 기능입니다."
+            },
+            {
+                number: 86,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Where are the structural properties, column datatypes, and configuration definitions of all extended database tables defined?",
+                options: [
+                    { key: "A", text: "Dictionary Override" },
+                    { key: "B", text: "System Dictionary" },
+                    { key: "C", text: "Transform Map" },
+                    { key: "D", text: "Activity stream" }
+                ],
+                correct: ["B"],
+                rationale: "모든 확장 테이블들의 개별 칼럼 특성과 데이터베이스적 본질 스키마 정보는 중앙 저장소 테이블인 'System Dictionary(시스템 사전)'에서 종합 관리됩니다."
+            },
+            {
+                number: 87,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which of the following is true regarding a Dictionary Override?",
+                options: [
+                    { key: "A", text: "It sets specific field properties (like mandatory or default values) in extended sub-tables without altering the parent table definitions." },
+                    { key: "B", text: "It allows users to bypass ACL security checks altogether." },
+                    { key: "C", text: "It acts as a staging area to clean raw imported spreadsheets." },
+                    { key: "D", text: "It merges multiple update sets together automatically." }
+                ],
+                correct: ["A"],
+                rationale: "사전 재정의(Dictionary Override)는 자식 테이블에서 부모 필드를 상속받아 쓸 때, 부모 고유 설정을 건드리지 않고 오직 본인 테이블 하위에서만 필드의 기본값, 필수 여부, 라벨명 등을 커스텀 개조하여 사용하는 상속 변경 기법입니다."
+            },
+            {
+                number: 88,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "During a data import process, what is the temporary staging table area where raw incoming records are stored before they are processed by a Transform Map?",
+                options: [
+                    { key: "A", text: "Target Table" },
+                    { key: "B", text: "Import Set Table (Staging Table)" },
+                    { key: "C", text: "System Dictionary" },
+                    { key: "D", text: "IRE Schema" }
+                ],
+                correct: ["B"],
+                rationale: "가져오기 세트 테이블(Import Set Table)은 외부 데이터를 인스턴스 전역에 삽입하기 전, 유효성 검사 및 칼럼 이관 정합성 판단을 수행하기 위해 잠시 대기시켜 놓는 안전한 '임시 중간 적재함'입니다."
+            },
+            {
+                number: 89,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "Which core ITSM feature can track the amount of time that a task has been open to ensure that operational tasks are completed within an allotted, agreed contract time?",
+                options: [
+                    { key: "A", text: "Service Level Agreements (SLAs)" },
+                    { key: "B", text: "Dictionary Overrides" },
+                    { key: "C", text: "Transform Maps" },
+                    { key: "D", text: "Impersonation sessions" }
+                ],
+                correct: ["A"],
+                rationale: "서비스 수준 합의서(SLA)는 특정 업무가 접수되어 처리 완료될 때까지의 누적 한계 소요 시간 타이머를 백엔드에서 추적하며, 합의서 준수 한계가 위협받을 때 이메일 독촉, 알림 격상 등의 에스컬레이션을 관리해 주는 약속 보장 기능입니다."
+            },
+            {
+                number: 90,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "What is a primary distinction between a UI Policy and a Data Policy in ServiceNow?",
+                options: [
+                    { key: "A", text: "Data Policies run regardless of how data is entered into ServiceNow (including integrations), while UI Policies are designed primarily for form interactions on browser screens." },
+                    { key: "B", text: "UI Policies enforce database constraints on the server, while Data Policies only apply to Catalog items." },
+                    { key: "C", text: "Data Policies only execute during client-side window loads." },
+                    { key: "D", text: "UI Policies cannot be translated into different languages, whereas Data Policies can." }
+                ],
+                correct: ["A"],
+                rationale: "데이터 정책(Data Policy)은 화면 입력 뿐만 아니라 Excel 일괄 업로드, 외부 API 연동 등 'DB 서버로 데이터가 들어가는 모든 경로'에서 무조건 작동하는 완고한 데이터 검사 규칙이며, UI 정책(UI Policy)은 오직 사용자가 브라우저 폼 상에서 타이핑할 때 즉각 필드를 여닫는 브라우저 단 전용 로직입니다."
+            },
+            {
+                number: 91,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "In Flow Designer, what is the 'Data Pill' representing?",
+                options: [
+                    { key: "A", text: "A cached element stored on the user's browser." },
+                    { key: "B", text: "A drag-and-drop data container representing output data from previous actions to be reused in subsequent steps." },
+                    { key: "C", text: "An error indicator when a script compilation fails." },
+                    { key: "D", text: "A localized dictionary string package." }
+                ],
+                correct: ["B"],
+                rationale: "데이터 필(Data Pill)은 플로우 디자이너(Flow Designer)에서 각 워크플로우 단위 블록들을 구성할 때, 앞선 단계가 뱉어낸 결과 파생 데이터값(예: 'Step 1'에서 찾아온 유저 이메일 주소)을 마우스 드래그로 복사해 뒷 단계의 입력란에 꽂아 넣을 수 있게 만든 편리한 데이터 캡슐입니다."
+            },
+            {
+                number: 92,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which of the following is the primary application suite used to load and migrate data from external databases, spreadsheets, or Web Services into ServiceNow tables?",
+                options: [
+                    { key: "A", text: "System Import Sets" },
+                    { key: "B", text: "Catalog Builder" },
+                    { key: "C", text: "Update Sets Studio" },
+                    { key: "D", text: "Workflow Editor" }
+                ],
+                correct: ["A"],
+                rationale: "시스템 가져오기 세트(System Import Sets)는 엑셀, JDBC, JSON, XML 등 외부의 다양한 원천 데이터를 가져와 서비스나우 테이블로 연계 및 안전 삽입하는 가장 중추적인 시스템 데이터 적재 관리 앱입니다."
+            },
+            {
+                number: 93,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which import mapping option do you use when the field names on the imported staging table perfectly match the column names of the Target table?",
+                options: [
+                    { key: "A", text: "Automatic Mapping Assist" },
+                    { key: "B", text: "Interactive Schema builder" },
+                    { key: "C", text: "Dictionary Override" },
+                    { key: "D", text: "Coalesce Rule" }
+                ],
+                correct: ["A"],
+                rationale: "자동 매핑 지원(Automatic Mapping Assist)은 들어오는 엑셀 머리글(Header) 명칭과 받아주는 DB 대상 테이블 칼럼 명칭이 대소문자나 명칭에서 100% 일치할 경우, 수동 연결 드래그 없이 시스템이 즉시 일괄 칼럼 매핑 매칭을 완료하는 기능입니다."
+            },
+            {
+                number: 94,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "In CMDB parlance, how is any physical or logical component defined that needs to be tracked and managed in order to deliver IT services?",
+                options: [
+                    { key: "A", text: "Configuration Item (CI)" },
+                    { key: "B", text: "Data Pill" },
+                    { key: "C", text: "VTB Card" },
+                    { key: "D", text: "Activity Streamer" }
+                ],
+                correct: ["A"],
+                rationale: "구성 항목(CI)은 IT 조직이 고객에게 끊김 없는 고품질 서비스를 전달하기 위해 DB상에서 반드시 변경, 관리, 라이프사이클을 추적해야 하는 일체의 논리적/물리적 부품 자산(네트워크 모듈, 데이터베이스 서버 등)을 뜻합니다."
+            },
+            {
+                number: 95,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which database field type allows a user to look up and reference values located on another table dynamically?",
+                options: [
+                    { key: "A", text: "Reference field (Lookup)" },
+                    { key: "B", text: "String field" },
+                    { key: "C", text: "HTML formatter" },
+                    { key: "D", text: "Decimal number" }
+                ],
+                correct: ["A"],
+                rationale: "참조 필드(Reference field / Lookup)는 텍스트를 단순 입력하는 칸이 아니라, 연결된 다른 대상 테이블(예: 부서 테이블, 사용자 테이블)의 마스터 데이터를 실시간 조회하여 돋보기 클릭으로 데이터를 정확히 바인딩하는 관계형 필드 유형입니다."
+            },
+            {
+                number: 96,
+                topic: "Database Management & Security",
+                type: "multi",
+                question: "Which of the following database tables are extended directly or indirectly from the parent 'Task' table? (Choose three.)",
+                options: [
+                    { key: "A", text: "Incident [incident]" },
+                    { key: "B", text: "Problem [problem]" },
+                    { key: "C", text: "Change Request [change_request]" },
+                    { key: "D", text: "User [sys_user]" },
+                    { key: "E", text: "Configuration Item [cmdb_ci]" }
+                ],
+                correct: ["A", "B", "C"],
+                rationale: "서비스나우의 업무 흐름 기본 단위인 Task 테이블을 상속받는 핵심 3대 ITIL 프로세스 자식 테이블은 'Incident', 'Problem', 'Change Request'이며, 이들은 모두 Task 테이블 고유 필드를 물려받아 사용합니다."
+            },
+            {
+                number: 97,
+                topic: "Platform Overview & Navigation",
+                type: "single",
+                question: "If a user inputs 'sys_user.do' in the Filter Navigator, what interface is presented to the user?",
+                options: [
+                    { key: "A", text: "A blank form for creating a new User record." },
+                    { key: "B", text: "The list view of all active user accounts." },
+                    { key: "C", text: "The system dictionary properties of the sys_user table." },
+                    { key: "D", text: "A pop-up window containing user session debug logs." }
+                ],
+                correct: ["A"],
+                rationale: "필터 내비게이터에 '[테이블명].do'를 타이핑하면, 해당 타겟 테이블(sys_user)에 새로운 데이터를 즉각 입력하여 삽입할 수 있도록 빈 서식 폼(Form) 화면이 새 프레임에 열리게 됩니다."
+            },
+            {
+                number: 98,
+                topic: "Instance Configuration",
+                type: "single",
+                question: "Which system table stores all records of individual users within a ServiceNow instance?",
+                options: [
+                    { key: "A", text: "sys_user" },
+                    { key: "B", text: "sys_user_group" },
+                    { key: "C", text: "sys_user_role" },
+                    { key: "D", text: "sys_dictionary" }
+                ],
+                correct: ["A"],
+                rationale: "사용자 정보 마스터 테이블은 'sys_user'이며, 그룹 테이블은 'sys_user_group', 역할 관리 테이블은 'sys_user_role'입니다."
+            },
+            {
+                number: 99,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "What does the schema map illustrate in ServiceNow?",
+                options: [
+                    { key: "A", text: "A visual representation of table relationships, showing parent-child inheritances and database references." },
+                    { key: "B", text: "A list of system notifications sent out in the last 24 hours." },
+                    { key: "C", text: "A logical flow editor mapping variables inside a Catalog Builder." },
+                    { key: "D", text: "A physical blueprint of server rooms in a data center." }
+                ],
+                correct: ["A"],
+                rationale: "스키마 지도(Schema Map)는 대상 데이터베이스 테이블이 다른 테이블들과 어떤 외래키 상속, 자식 파생 및 다대다 연결 등으로 엮여 있는지 물리적 DB 관계를 한눈에 가시적으로 표현하는 지도 도구입니다."
+            },
+            {
+                number: 100,
+                topic: "Instance Configuration",
+                type: "single",
+                question: "Which role can elevate their permissions to 'security_admin' for managing high-security Access Control Lists (ACLs)?",
+                options: [
+                    { key: "A", text: "itil" },
+                    { key: "B", text: "admin" },
+                    { key: "C", text: "personalize_dictionary" },
+                    { key: "D", text: "catalog_admin" }
+                ],
+                correct: ["B"],
+                rationale: "시스템 최상위 보안 수정 권한인 'security_admin' 역할은 일반 사용자는 상속받을 수 없으며, 전역 권한을 지닌 'admin'이 명시적으로 Elevate session을 요청할 때만 세션상에서 임시 부여됩니다."
+            },
+            {
+                number: 101,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "In ServiceNow list views, what is the purpose of the 'Personalize List' gear icon?",
+                options: [
+                    { key: "A", text: "To hide or reveal specific list columns solely for the individual logged-in user." },
+                    { key: "B", text: "To change the global schema fields on the master database table." },
+                    { key: "C", text: "To delete transactional records in bulk." },
+                    { key: "D", text: "To set global system localization default styles." }
+                ],
+                correct: ["A"],
+                rationale: "목록 오른쪽 위에 있는 톱니바퀴 단추(Personalize List)는 다른 부서 팀원들의 기본 열 구성은 건드리지 않고, 오직 '나의 개인 로그인 화면에서만' 필요한 열을 즉각 켜거나 끄는 화면 개인화 버튼입니다."
+            },
+            {
+                number: 102,
+                topic: "Configuring Applications for Collaboration",
+                type: "single",
+                question: "Which feature is used to define and automatically send an SMS text message or Email to an end-user when their Ticket state changes?",
+                options: [
+                    { key: "A", text: "System Notification" },
+                    { key: "B", text: "Dictionary Override" },
+                    { key: "C", text: "VTB Guided board" },
+                    { key: "D", text: "IRE Engine" }
+                ],
+                correct: ["A"],
+                rationale: "시스템 알림(System Notification)은 DB 레코드 값의 상태 변화(예: State가 Resolved로 갱신됨) 이벤트를 수신하여 지정된 템플릿의 안내 이메일이나 SMS를 고객에게 즉각 발송하는 자동 전송 엔진입니다."
+            },
+            {
+                number: 103,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "Which of the following describes the correct order of ServiceNow's service request record generation hierarchy?",
+                options: [
+                    { key: "A", text: "Request (REQ) -> Requested Item (RITM) -> Catalog Task (SCTASK)" },
+                    { key: "B", text: "Catalog Task (SCTASK) -> Requested Item (RITM) -> Request (REQ)" },
+                    { key: "C", text: "Requested Item (RITM) -> Request (REQ) -> Catalog Task (SCTASK)" },
+                    { key: "D", text: "Request (REQ) -> Catalog Task (SCTASK) -> Requested Item (RITM)" }
+                ],
+                correct: ["A"],
+                rationale: "포털에서 결제 신청 시, '전체 영수증(REQ)'이 가장 높은 마스터 노드로 생성되고, 그 하부에 신청한 '각 개별 아이템(RITM)' 레코드가 자식으로 물리며, 이를 처리하기 위해 실무자가 일할 '상세 작업 작업 지시서(SCTASK)'가 최하위 계층으로 발부됩니다."
+            },
+            {
+                number: 104,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "What is the primary table where the Master list of all Configuration Items (CIs) in the Configuration Management Database is located?",
+                options: [
+                    { key: "A", text: "cmdb_ci" },
+                    { key: "B", text: "cmdb_rel_ci" },
+                    { key: "C", text: "sys_db_object" },
+                    { key: "D", text: "sys_dictionary" }
+                ],
+                correct: ["A"],
+                rationale: "CMDB의 모든 클래스 하위 항목들이 공통으로 상속 및 적재되는 전역 기본 부모 구성 항목 테이블명은 'cmdb_ci'입니다."
+            },
+            {
+                number: 105,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "What are the three core actions that can be performed on form fields using a ServiceNow UI Policy?",
+                options: [
+                    { key: "A", text: "Set field properties to Mandatory, Read-only, or Visible" },
+                    { key: "B", text: "Define table indexes, primary keys, and unique constraints" },
+                    { key: "C", text: "Add custom UI Action buttons, dropdown lists, and menus" },
+                    { key: "D", text: "Export data to Excel, CSV, or XML packages" }
+                ],
+                correct: ["A"],
+                rationale: "UI 정책(UI Policy)은 코딩 없이 '특정 조건 만족 시' 화면 위의 특정 칼럼 필드를 '필수(Mandatory)', '읽기 전용(Read-only)', '표시/숨김(Visible)' 상태로 다이내믹하게 강제 제어합니다."
+            },
+            {
+                number: 106,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which script runs on the client-side browser immediately when a user clicks the 'Submit' button on a form?",
+                options: [
+                    { key: "A", text: "onSubmit Client Script" },
+                    { key: "B", text: "onLoad Client Script" },
+                    { key: "C", text: "onChange Client Script" },
+                    { key: "D", text: "Business Rule" }
+                ],
+                correct: ["A"],
+                rationale: "onSubmit 클라이언트 스크립트는 폼 입력 후 제출(Submit) 버튼을 누르고 서버로 전송되기 직전에 실행되어, 마지막 기입 조건 유효성 검사(Validation) 및 강제 전송 제어(false 반환 시 취소)를 담당하는 스크립트입니다."
+            },
+            {
+                number: 107,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which of the following elements is strictly NOT captured within a ServiceNow Update Set configuration pack?",
+                options: [
+                    { key: "A", text: "Physical transactional data records (like active incidents or newly created user rows)" },
+                    { key: "B", text: "Table definitions and database schemas" },
+                    { key: "C", text: "Client-side scripts and server-side UI actions" },
+                    { key: "D", text: "System notifications and email templates" }
+                ],
+                correct: ["A"],
+                rationale: "업데이트 세트(Update Set)는 '시스템의 아키텍처 설정 변경점(Configuration)'만 선별 포장하므로, 실무진들이 등록하는 실제 고객 '장애 데이터 티켓(Incident records)'이나 신규 입사자 사원 가입 정보와 같은 '동적 데이터(Data)'는 수집 대상에서 절대 제외됩니다."
+            },
+            {
+                number: 108,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "What is the standard correct lifecycle of migrating and committing an Update Set from a Dev environment to a Production environment?",
+                options: [
+                    { key: "A", text: "Retrieve (Import) -> Preview -> Commit" },
+                    { key: "B", text: "Commit -> Preview -> Retrieve" },
+                    { key: "C", text: "Preview -> Commit -> Retrieve" },
+                    { key: "D", text: "Retrieve -> Commit -> Preview" }
+                ],
+                correct: ["A"],
+                rationale: "업데이트 세트를 받아 반영하는 타겟 운영 환경에서의 표준 마이그레이션 순서는 1단계: Dev 서버로부터 가져오기(Retrieve/Import), 2단계: 충돌 및 적합성 예비 확인(Preview), 3단계: 확인 통과 시 DB에 영구 반영(Commit) 순서입니다."
+            },
+            {
+                number: 109,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which type of script runs on the database server automatically when records are inserted, updated, or deleted?",
+                options: [
+                    { key: "A", text: "Business Rule" },
+                    { key: "B", text: "Client Script" },
+                    { key: "C", text: "UI Policy Action" },
+                    { key: "D", text: "Form Layout override" }
+                ],
+                correct: ["A"],
+                rationale: "비즈니스 규칙(Business Rule)은 DB 수준에서 강력한 저장 정합성을 제어하거나 다른 필드의 누적 합산 등을 처리하기 위해 인서트(Insert), 업데이트(Update), 딜리트(Delete) 트랜잭션이 작동할 때 서버에서 조용히 실행되는 백엔드 트리거 스크립트입니다."
+            },
+            {
+                number: 110,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which type of Client Script executes immediately when a user changes the value in a specific individual field on a form view?",
+                options: [
+                    { key: "A", text: "onChange Client Script" },
+                    { key: "B", text: "onLoad Client Script" },
+                    { key: "C", text: "onSubmit Client Script" },
+                    { key: "D", text: "onCellEdit Client Script" }
+                ],
+                correct: ["A"],
+                rationale: "onChange 클라이언트 스크립트는 폼 내의 특정 단일 필드값(예: Category)이 변경되는 순간을 브라우저가 즉각 후킹하여 그에 종속된 하위 옵션값을 다르게 표시하는 등의 연쇄 즉시 반응을 유도하는 스크립트입니다."
+            },
+            {
+                number: 111,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "What is the primary action required of an administrator if an Update Set preview reports conflict errors before it can be applied?",
+                options: [
+                    { key: "A", text: "The errors must be resolved by choosing to either accept the remote change or discard it before committing." },
+                    { key: "B", text: "The administrator must re-authenticate user session elevated roles." },
+                    { key: "C", text: "The update set must be deleted and created again from scratch." },
+                    { key: "D", text: "The SQL database must be manually restarted." }
+                ],
+                correct: ["A"],
+                rationale: "업데이트 세트 프리뷰 시 충돌(Conflict) 에러가 감지되면, 이를 무시한 채 강제 적용할 수 없습니다. 시스템 관리자는 소스 코드와 타겟 코드 중 어느 것을 유지하고 어떤 것을 버릴지 에러 해소(Resolve) 작업을 마쳐야만 최종 커밋 단계로 나아갈 수 있습니다."
+            },
+            {
+                number: 112,
+                topic: "Data Migration & Integration",
+                type: "single",
+                question: "Which system utility enables developers to combine multiple distinct Update Sets into one single package for easier deployment?",
+                options: [
+                    { key: "A", text: "Merge Update Sets" },
+                    { key: "B", text: "Transform Maps Assist" },
+                    { key: "C", text: "Schema Link Map" },
+                    { key: "D", text: "VTB Card Editor" }
+                ],
+                correct: ["A"],
+                rationale: "업데이트 세트 병합(Merge Update Sets) 기능은 소규모 조각으로 분리 개발된 여러 대장 장바구니(Update Sets)를 하나의 단일 대형 이관 패키지로 합체시켜 배포 실수와 복잡성을 크게 줄여주는 고마운 관리 도구입니다."
+            },
+            {
+                number: 113,
+                topic: "Self-Service & Automation",
+                type: "single",
+                question: "Which simplified, user-friendly builder allows business analysts and citizen developers to create Catalog items without administrative access to the backend?",
+                options: [
+                    { key: "A", text: "Catalog Builder" },
+                    { key: "B", text: "Form Designer" },
+                    { key: "C", text: "Studio IDE" },
+                    { key: "D", text: "VTB Builder" }
+                ],
+                correct: ["A"],
+                rationale: "카탈로그 빌더(Catalog Builder)는 시스템 내부 관리자(Admin) 수준의 세세한 백엔드 설정창을 거치지 않고도, 안내형 전용 마법사를 통해 누구나 안전하고 신속하게 본인 부서 전용 카탈로그 주문품을 빌드할 수 있게 지원하는 로우코드 유틸리티입니다."
+            },
+            {
+                number: 114,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which field option determines if duplicate records should be updated, or if new records should be inserted instead during data import transformations?",
+                options: [
+                    { key: "A", text: "Coalesce" },
+                    { key: "B", text: "Mandatory" },
+                    { key: "C", text: "ReadOnly" },
+                    { key: "D", text: "Dictionary Override" }
+                ],
+                correct: ["A"],
+                rationale: "합병 조건 지정(Coalesce)은 유입되는 데이터를 DB에 밀어 넣을 때 고유 키값(예: 사원번호)을 비교하여 중복 데이터는 기존 레코드를 교체 업데이트하고, 없는 데이터일 때만 안전하게 인서트(Insert) 처리하는 마법 같은 무결성 제어 장치입니다."
+            },
+            {
+                number: 115,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which of the following wildcard symbols represents 'all fields' inside a target table during an ACL security evaluation rule?",
+                options: [
+                    { key: "A", text: "The asterisk symbol (*)" },
+                    { key: "B", text: "The text 'all'" },
+                    { key: "C", text: "The word 'None'" },
+                    { key: "D", text: "A double dot (..)" }
+                ],
+                correct: ["A"],
+                rationale: "와일드카드 별표 기호(*)는 ACL에서 테이블 내의 '모든 개별 필드(All Fields)' 전체 영역을 포괄 지시하는 연산 규칙입니다."
+            },
+            {
+                number: 116,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "In list views, which configuration is used to disable the list editing capability for a specific table?",
+                options: [
+                    { key: "A", text: "List Control settings" },
+                    { key: "B", text: "UI Policy Action" },
+                    { key: "C", text: "Client Script onSubmit" },
+                    { key: "D", text: "Form Designer layout" }
+                ],
+                correct: ["A"],
+                rationale: "특정 테이블의 무분별한 데이터 오염을 막기 위해 목록에서의 더블클릭 실시간 편집을 전면 금지하는 장치는 마우스 우클릭을 통해 접근할 수 있는 'List Control(목록 제어)' 설정창입니다."
+            },
+            {
+                number: 117,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "What is the system name of the table that stores a list of all tables registered in the ServiceNow database?",
+                options: [
+                    { key: "A", text: "sys_db_object" },
+                    { key: "B", text: "sys_dictionary" },
+                    { key: "C", text: "sys_metadata" },
+                    { key: "D", text: "sys_table" }
+                ],
+                correct: ["A"],
+                rationale: "인스턴스 DB에 존재하는 모든 테이블의 정의 정보 및 시스템 레코드 목록을 저장하는 심장부와 같은 근본 테이블 명칭은 'sys_db_object'입니다."
+            },
+            {
+                number: 118,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "When evaluating Access Control (ACL) rules, what is the sequence in which ServiceNow evaluates permissions?",
+                options: [
+                    { key: "A", text: "From most specific to most general (Field-level first, then Table-level)" },
+                    { key: "B", text: "From most general to most specific (Table-level first, then Field-level)" },
+                    { key: "C", text: "In alphabetical order of roles" },
+                    { key: "D", text: "Randomly evaluated" }
+                ],
+                correct: ["B"],
+                rationale: "서비스나우 보안 평가는 넓은 껍데기 보안 규정(Table-level ACL)을 1차로 통과한 데이터에 한해, 더 세부적이고 강력한 알맹이 규정(Field-level ACL)을 2차로 정밀 검사하는 '상위(Table)에서 하위(Field)' 검사 순서를 준수합니다."
+            },
+            {
+                number: 119,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "Which setting determines what happens to child records if their associated parent record is deleted?",
+                options: [
+                    { key: "A", text: "Delete Rule (Reference Specification)" },
+                    { key: "B", text: "Coalesce Rule" },
+                    { key: "C", text: "Data Policy Action" },
+                    { key: "D", text: "VTB Configuration" }
+                ],
+                correct: ["A"],
+                rationale: "참조 설정 규정(Reference Specification)에 수립된 '삭제 규칙(Delete Rule)'은 상위 부모 레코드가 지워질 때 자식 참조 레코드들을 연쇄 삭제(Cascade)할 것인지, 거부(Restrict)할 것인지, 단순 빈칸(Clear)으로 대체할 것인지 통제합니다."
+            },
+            {
+                number: 120,
+                topic: "Database Management & Security",
+                type: "single",
+                question: "To ensure that no two users can register with the exact same 'User ID' (user_name) inside the instance, which System Dictionary attribute must be configured on that column?",
+                options: [
+                    { key: "A", text: "Unique = true" },
+                    { key: "B", text: "Mandatory = true" },
+                    { key: "C", text: "ReadOnly = true" },
+                    { key: "D", text: "Coalesce = true" }
+                ],
+                correct: ["A"],
+                rationale: "특정 필드의 중복 기입을 엔진 물리 레벨에서 완벽하게 차단하기 위해서는 사전 속성에서 'Unique' 필드 제약 조건을 참(true)으로 체크해 주어야 합니다."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedAnswers = {}; // Map of index -> Array of selected option keys
+        let checkedAnswers = {}; // Map of index -> boolean (Practice Mode indicator)
+        let appMode = 'practice'; // 'practice' or 'exam'
+        let examFinished = false;
+        let activeFilter = 'all'; // 'all', 'unsolved', 'correct', 'incorrect'
+
+        // Custom Modal Control variables
+        let activeConfirmCallback = null;
+
+        // Custom Modal Alert Box replacement for window.alert
+        function customAlert(title, message, isError = false) {
+            const modal = document.getElementById('custom-modal');
+            const iconContainer = document.getElementById('modal-icon-container');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const messageEl = document.getElementById('modal-message');
+            const buttonsContainer = document.getElementById('modal-buttons');
+
+            titleEl.innerText = title;
+            messageEl.innerText = message;
+            
+            if (isError) {
+                iconContainer.className = "p-3 rounded-full flex-shrink-0 bg-rose-100 text-rose-600";
+                icon.className = "fa-solid fa-circle-xmark text-xl";
+            } else {
+                iconContainer.className = "p-3 rounded-full flex-shrink-0 bg-teal-100 text-teal-600";
+                icon.className = "fa-solid fa-circle-check text-xl";
+            }
+
+            buttonsContainer.innerHTML = `
+                <button onclick="dismissModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-sm transition-all">
+                    확인
+                </button>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Custom Confirm Dialogue replacement for window.confirm
+        function customConfirm(title, message, onConfirm) {
+            const modal = document.getElementById('custom-modal');
+            const iconContainer = document.getElementById('modal-icon-container');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const messageEl = document.getElementById('modal-message');
+            const buttonsContainer = document.getElementById('modal-buttons');
+
+            titleEl.innerText = title;
+            messageEl.innerText = message;
+            
+            iconContainer.className = "p-3 rounded-full flex-shrink-0 bg-blue-100 text-blue-600";
+            icon.className = "fa-solid fa-circle-question text-xl";
+
+            activeConfirmCallback = onConfirm;
+
+            buttonsContainer.innerHTML = `
+                <button onclick="dismissModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-bold transition-all">
+                    취소
+                </button>
+                <button onclick="triggerConfirmCallback()" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-slate-900 rounded-xl text-xs font-bold shadow-sm transition-all">
+                    확인
+                </button>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function dismissModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            activeConfirmCallback = null;
+        }
+
+        function triggerConfirmCallback() {
+            if (activeConfirmCallback) {
+                activeConfirmCallback();
+            }
+            dismissModal();
+        }
+
+        // Initialize App
+        function initApp() {
+            renderQuestionsGrid();
+            loadQuestion(0);
+            updateStats();
+        }
+
+        // Set mode: Practice or Exam
+        function setMode(mode) {
+            if(examFinished) {
+                customAlert("알림", "시험이 완료되었습니다. 다시 풀려면 우측 상단 초기화 버튼을 눌러주세요.");
+                return;
+            }
+            appMode = mode;
+            
+            const btnPractice = document.getElementById('btn-practice-mode');
+            const btnExam = document.getElementById('btn-exam-mode');
+            const globalBar = document.getElementById('global-action-bar');
+            
+            if(mode === 'practice') {
+                btnPractice.className = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-teal-500 text-slate-900 shadow-sm";
+                btnExam.className = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-400 hover:text-white";
+                globalBar.classList.add('hidden');
+                document.getElementById('score-stats-box').classList.remove('hidden');
+            } else {
+                btnExam.className = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-teal-500 text-slate-900 shadow-sm";
+                btnPractice.className = "px-4 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-400 hover:text-white";
+                globalBar.classList.remove('hidden');
+                document.getElementById('score-stats-box').classList.add('hidden');
+            }
+            loadQuestion(currentQuestionIndex);
+        }
+
+        // Set Dashboard Grid Filter
+        function setFilter(filterType) {
+            activeFilter = filterType;
+            
+            // Adjust buttons active styling
+            ['all', 'unsolved', 'correct', 'incorrect'].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (f === filterType) {
+                    btn.className = "flex-grow py-1 rounded text-[10px] font-bold bg-slate-200 text-slate-800";
+                } else {
+                    btn.className = "flex-grow py-1 rounded text-[10px] font-bold text-slate-500 hover:bg-slate-50";
+                }
+            });
+
+            renderQuestionsGrid();
+        }
+
+        // Render Sidebar Navigation Grid
+        function renderQuestionsGrid() {
+            const gridContainer = document.getElementById('questions-grid');
+            gridContainer.innerHTML = '';
+            
+            quizData.forEach((q, idx) => {
+                const isSolved = selectedAnswers[idx] && selectedAnswers[idx].length > 0;
+                const isChecked = checkedAnswers[idx];
+                const isCorrect = verifyAnswer(idx);
+
+                // Apply dynamic filters
+                if (activeFilter === 'unsolved' && isSolved) return;
+                if (activeFilter === 'correct' && (!isChecked || !isCorrect)) return;
+                if (activeFilter === 'incorrect' && (!isChecked || isCorrect)) return;
+
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.className = getGridBtnClass(idx);
+                btn.innerText = q.number;
+                btn.onclick = () => loadQuestion(idx);
+                gridContainer.appendChild(btn);
+            });
+        }
+
+        // Color coding logic for sidebar grid buttons based on state & mode
+        function getGridBtnClass(idx) {
+            const baseClass = "h-10 w-full rounded-xl text-xs font-bold flex items-center justify-center border transition-all ";
+            
+            // Highlight currently selected question
+            let activeBorder = (idx === currentQuestionIndex) ? " ring-2 ring-slate-900 ring-offset-2 " : " ";
+            
+            // Answered state
+            const hasAnswer = selectedAnswers[idx] && selectedAnswers[idx].length > 0;
+            const isChecked = checkedAnswers[idx];
+
+            if (appMode === 'practice' && isChecked) {
+                const isCorrect = verifyAnswer(idx);
+                if (isCorrect) {
+                    return baseClass + "bg-emerald-500 border-emerald-600 text-white shadow-sm" + activeBorder;
+                } else {
+                    return baseClass + "bg-rose-500 border-rose-600 text-white shadow-sm" + activeBorder;
+                }
+            } else if (examFinished) {
+                const isCorrect = verifyAnswer(idx);
+                if (isCorrect) {
+                    return baseClass + "bg-emerald-500 border-emerald-600 text-white shadow-sm" + activeBorder;
+                } else {
+                    return baseClass + "bg-rose-500 border-rose-600 text-white shadow-sm" + activeBorder;
+                }
+            } else if (hasAnswer) {
+                return baseClass + "bg-blue-500 border-blue-600 text-white shadow-sm" + activeBorder;
+            }
+
+            return baseClass + "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100" + activeBorder;
+        }
+
+        // Load specific question details
+        function loadQuestion(idx) {
+            currentQuestionIndex = idx;
+            const q = quizData[idx];
+
+            // Setup Badge Info
+            document.getElementById('question-index-badge').innerText = `Question #${q.number}`;
+            document.getElementById('question-type-badge').innerText = q.type === 'multi' ? 'Choose More (복수 선택)' : 'Single Choice (단일 선택)';
+            document.getElementById('topic-badge').innerText = q.topic;
+            
+            // Text Content
+            document.getElementById('question-text').innerText = q.question;
+            
+            // Render Option Items
+            renderOptions(q, idx);
+
+            // Update Grid indicators
+            renderQuestionsGrid();
+            updateNavigationButtons();
+            
+            // Control visibility of checks and answers
+            const explContainer = document.getElementById('explanation-container');
+            const submitBtn = document.getElementById('btn-submit-answer');
+
+            if (appMode === 'practice') {
+                submitBtn.classList.remove('hidden');
+                if (checkedAnswers[idx]) {
+                    showExplanation(q);
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "다시 채점하기 (Re-check)";
+                    submitBtn.className = "px-6 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-xs shadow-sm transition-all";
+                } else {
+                    explContainer.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "정답 확인";
+                    submitBtn.className = "px-6 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-slate-900 font-bold text-xs shadow-sm transition-all";
+                }
+            } else {
+                // Exam Mode: Hide immediate check controls
+                submitBtn.classList.add('hidden');
+                if (examFinished) {
+                    showExplanation(q);
+                } else {
+                    explContainer.classList.add('hidden');
+                }
+            }
+            updateStats();
+        }
+
+        // Render option blocks inside current question
+        function renderOptions(q, qIdx) {
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            const selected = selectedAnswers[qIdx] || [];
+            const isChecked = checkedAnswers[qIdx];
+
+            q.options.forEach(opt => {
+                const optBlock = document.createElement('div');
+                const isSelected = selected.includes(opt.key);
+                
+                // Set default styling
+                let borderStyle = "border-slate-200 hover:border-slate-300 bg-white";
+                let textStyle = "text-slate-700";
+                let checkIcon = `<div class="w-5 h-5 rounded-md border border-slate-300 flex items-center justify-center text-xs mr-3 flex-shrink-0 transition-all bg-slate-50"></div>`;
+
+                if (isSelected) {
+                    borderStyle = "border-teal-500 bg-teal-50/50 ring-1 ring-teal-500";
+                    textStyle = "text-teal-900 font-semibold";
+                    checkIcon = `<div class="w-5 h-5 rounded-md bg-teal-500 text-slate-900 flex items-center justify-center text-xs mr-3 flex-shrink-0 transition-all"><i class="fa-solid fa-check text-[10px]"></i></div>`;
+                }
+
+                // Color overrides upon submission
+                if (isChecked || examFinished) {
+                    const correctChoice = q.correct.includes(opt.key);
+                    if (correctChoice) {
+                        borderStyle = "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500";
+                        textStyle = "text-emerald-900 font-bold";
+                        checkIcon = `<div class="w-5 h-5 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs mr-3 flex-shrink-0"><i class="fa-solid fa-check text-[10px]"></i></div>`;
+                    } else if (isSelected) {
+                        borderStyle = "border-rose-500 bg-rose-50/50 ring-1 ring-rose-500";
+                        textStyle = "text-rose-900 font-bold";
+                        checkIcon = `<div class="w-5 h-5 rounded-md bg-rose-500 text-white flex items-center justify-center text-xs mr-3 flex-shrink-0"><i class="fa-solid fa-xmark text-[10px]"></i></div>`;
+                    }
+                }
+
+                optBlock.className = `p-4 rounded-xl border ${borderStyle} cursor-pointer transition-all flex items-center select-none`;
+                optBlock.innerHTML = `
+                    ${checkIcon}
+                    <div class="text-xs sm:text-sm ${textStyle}">${opt.key}. ${opt.text}</div>
+                `;
+
+                // Handle choices change dynamically (Always available)
+                optBlock.onclick = () => {
+                    toggleAnswer(qIdx, opt.key, q.type);
+                };
+
+                container.appendChild(optBlock);
+            });
+        }
+
+        // Handle logical select changes
+        function toggleAnswer(qIdx, key, type) {
+            if(!selectedAnswers[qIdx]) {
+                selectedAnswers[qIdx] = [];
+            }
+
+            const currentSelections = selectedAnswers[qIdx];
+
+            if (type === 'single') {
+                selectedAnswers[qIdx] = [key];
+            } else {
+                const index = currentSelections.indexOf(key);
+                if (index > -1) {
+                    currentSelections.splice(index, 1);
+                } else {
+                    const maxCount = quizData[qIdx].correct.length;
+                    if (currentSelections.length >= maxCount) {
+                        currentSelections.shift();
+                    }
+                    currentSelections.push(key);
+                }
+            }
+
+            // CRITICAL USER FEEDBACK FIX: If they already solved this question, we reset the checked state 
+            // so they can freely modify it, update selections, and re-trigger check answer seamlessly!
+            if (checkedAnswers[qIdx]) {
+                checkedAnswers[qIdx] = false;
+                loadQuestion(qIdx);
+            } else {
+                renderOptions(quizData[qIdx], qIdx);
+            }
+            
+            renderQuestionsGrid();
+            updateStats();
+        }
+
+        // Submit Action in Practice Mode
+        function submitCurrentAnswer() {
+            const idx = currentQuestionIndex;
+            const chosen = selectedAnswers[idx] || [];
+
+            if(chosen.length === 0) {
+                customAlert("주의", "답안을 먼저 선택해 주세요.", true);
+                return;
+            }
+
+            const q = quizData[idx];
+            if(q.type === 'multi' && chosen.length < q.correct.length) {
+                customAlert("알림", `이 문제는 ${q.correct.length}개의 정답을 골라주셔야 합니다.`, true);
+                return;
+            }
+
+            checkedAnswers[idx] = true;
+            loadQuestion(idx);
+        }
+
+        // Allow to clear selected answers and re-try easily
+        function modifyAnswerOnExplain() {
+            const idx = currentQuestionIndex;
+            checkedAnswers[idx] = false;
+            loadQuestion(idx);
+        }
+
+        // Check verification for question
+        function verifyAnswer(idx) {
+            const q = quizData[idx];
+            const chosen = selectedAnswers[idx] || [];
+            if (chosen.length !== q.correct.length) return false;
+            return q.correct.every(val => chosen.includes(val));
+        }
+
+        // Show Explanation card
+        function showExplanation(q) {
+            const explContainer = document.getElementById('explanation-container');
+            explContainer.classList.remove('hidden');
+            document.getElementById('correct-answers-display').innerText = `Suggested Answer: ${q.correct.join(', ')}`;
+            document.getElementById('explanation-text').innerText = q.rationale;
+        }
+
+        // Navigation actions
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        // Next Question action
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('btn-prev').disabled = (currentQuestionIndex === 0);
+            document.getElementById('btn-next').disabled = (currentQuestionIndex === quizData.length - 1);
+        }
+
+        // Dashboard Stats calculation
+        function updateStats() {
+            const total = quizData.length;
+            const answered = Object.keys(selectedAnswers).filter(k => selectedAnswers[k].length > 0).length;
+            
+            document.getElementById('answered-count').innerText = `${answered} / ${total}`;
+            
+            const percent = Math.round((answered / total) * 100);
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+
+            // Score logic depending on Practice vs Exam Mode
+            const scoreBox = document.getElementById('score-stats-box');
+            if (appMode === 'practice') {
+                const checkedKeys = Object.keys(checkedAnswers).filter(k => checkedAnswers[k] === true);
+                if(checkedKeys.length > 0) {
+                    const correctCount = checkedKeys.filter(k => verifyAnswer(k)).length;
+                    document.getElementById('score-text').innerText = `${correctCount} / ${checkedKeys.length}`;
+                    scoreBox.className = "bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800";
+                } else {
+                    document.getElementById('score-text').innerText = "-";
+                    scoreBox.className = "bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-700";
+                }
+            } else {
+                if (examFinished) {
+                    const correctCount = quizData.filter((_, idx) => verifyAnswer(idx)).length;
+                    document.getElementById('score-text').innerText = `${correctCount} / ${total}`;
+                    scoreBox.className = "bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-800";
+                } else {
+                    document.getElementById('score-text').innerText = "대기중";
+                    scoreBox.className = "bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-700";
+                }
+            }
+        }
+
+        // Custom Confirm Trigger for Final Submit
+        function confirmFinishQuiz() {
+            const unansweredCount = quizData.length - Object.keys(selectedAnswers).filter(k => selectedAnswers[k].length > 0).length;
+            
+            if (unansweredCount > 0) {
+                customConfirm(
+                    "최종 제출 확인", 
+                    `아직 풀지 않은 문제가 ${unansweredCount}개 있습니다. 이대로 최종 제출하시겠습니까?`, 
+                    function() {
+                        executeFinishQuiz();
+                    }
+                );
+            } else {
+                customConfirm(
+                    "최종 제출 확인", 
+                    "답안을 최종 제출하시겠습니까? 제출 후 모든 문항에 대한 정답과 해설이 오픈됩니다.", 
+                    function() {
+                        executeFinishQuiz();
+                    }
+                );
+            }
+        }
+
+        // Finish Exam
+        function executeFinishQuiz() {
+            examFinished = true;
+            document.getElementById('btn-final-submit').classList.add('hidden');
+            document.getElementById('score-stats-box').classList.remove('hidden');
+            
+            loadQuestion(0);
+            
+            const finalScore = quizData.filter((_, idx) => verifyAnswer(idx)).length;
+            customAlert("제출 완료", `성공적으로 제출되었습니다! 최종 정답률은: ${finalScore} / ${quizData.length} (${Math.round((finalScore/quizData.length)*100)}%) 입니다.`);
+        }
+
+        // Custom Confirm Trigger for Resetting Quiz
+        function confirmResetQuiz() {
+            customConfirm(
+                "초기화 확인", 
+                "모든 문제 풀이 및 정답 확인 기록을 초기화하시겠습니까?", 
+                function() {
+                    executeResetQuiz();
+                }
+            );
+        }
+
+        // Reset App State completely
+        function executeResetQuiz() {
+            selectedAnswers = {};
+            checkedAnswers = {};
+            examFinished = false;
+            document.getElementById('btn-final-submit').classList.remove('hidden');
+            initApp();
+            customAlert("초기화 완료", "모든 기록이 깨끗이 초기화되었습니다.");
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
